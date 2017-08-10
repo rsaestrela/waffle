@@ -1,0 +1,36 @@
+---
+interfaceName: ServiceHelloWorld
+version: 1.0.0
+description: hello world!
+namespace: com.service.hello.world
+ownership: ''
+authors:
+- name: world
+  email: world@hello.com
+
+types:
+- name: FooBar
+  attributes:
+  - attr: name
+    type: string
+  validator: true
+
+operations:
+- name: getLOL
+  method: GET
+  requestParameters:
+  - name: hi
+    mandatory: true
+    type: string
+  response:
+    name: bye
+    type: int
+- name: postLOL
+  method: POST
+  requestParameters:
+  - name: hi
+    mandatory: true
+    type: string
+  response:
+    name: bye
+    type: long
