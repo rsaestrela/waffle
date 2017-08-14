@@ -16,7 +16,7 @@ public class ServiceDefinitionsLoader {
         Yaml yaml = new Yaml();
         for (String definitionFile: definitionFiles) {
             try (InputStream is = ClassLoader.getSystemResourceAsStream(definitionFile)) {
-                serviceDefinitions.getServiceDefinitions().add(yaml.loadAs(is, ServiceDefinition.class));
+                serviceDefinitions.getServiceDefinitions().add(sanitized(yaml.loadAs(is, ServiceDefinition.class)));
             } catch (Exception e) {
                 throw new WaffleDefinitionsException(e);
             }
@@ -24,4 +24,12 @@ public class ServiceDefinitionsLoader {
         return serviceDefinitions;
     }
 
+    private ServiceDefinition sanitized(ServiceDefinition serviceDefinition) {
+        serviceDefinition.getTypes().forEach(t -> {
+            if (t.getAttributes() == null) {
+                t.setAttributes(new ArrayList<>());
+            }
+        });
+        return serviceDefinition;
+    }
 }

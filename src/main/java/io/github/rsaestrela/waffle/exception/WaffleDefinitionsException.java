@@ -1,7 +1,7 @@
 package io.github.rsaestrela.waffle.exception;
 
 
-public class WaffleDefinitionsException extends RuntimeException {
+public class WaffleDefinitionsException extends Exception {
 
     public WaffleDefinitionsException(String message) {
         super(message);

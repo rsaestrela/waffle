@@ -1,28 +1,39 @@
 package io.github.rsaestrela.waffle.processor;
 
 
+import io.github.rsaestrela.waffle.exception.WaffleTypesException;
 import io.github.rsaestrela.waffle.model.Attribute;
 import io.github.rsaestrela.waffle.model.Type;
-import org.testng.annotations.BeforeTest;
+import io.github.rsaestrela.waffle.processor.validation.CheckedValidator;
+import org.mockito.Mock;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.MockitoAnnotations.initMocks;
 import static org.testng.Assert.*;
 
 public class TypesProcessorTest {
 
     private static final String NAMESPACE = "io.rsaestrela.github";
 
+    @Mock
+    private CheckedValidator<List<Type>, WaffleTypesException> validator;
+
     private TypesProcessor victim;
 
-    @BeforeTest
+    @BeforeMethod
     public void init() throws IOException {
-        victim = new TypesProcessor(NAMESPACE);
+        initMocks(this);
+        victim = new TypesProcessor(NAMESPACE, validator);
     }
 
     @Test
@@ -58,9 +69,11 @@ public class TypesProcessorTest {
 
         Type type3 = new Type();
         type3.setName("Genre");
+        type3.setAttributes(new ArrayList<>());
 
         Type type4 = new Type();
         type4.setName("Label");
+        type4.setAttributes(new ArrayList<>());
 
         try {
             Set<TypeOutputClass> typeOutputClasses =
@@ -82,83 +95,15 @@ public class TypesProcessorTest {
     }
 
     @Test
-    public void shouldFailValidationTypeMissing() {
-
-        Attribute attribute = new Attribute();
-        attribute.setAttributeName("title");
-        attribute.setType("string");
-        attribute.setValidator(false);
-
-        Attribute attribute2 = new Attribute();
-        attribute2.setAttributeName("genre");
-        attribute2.setType("Genre");
-        attribute2.setValidator(false);
-
-        Type type1 = new Type();
-        type1.setName("Track");
-        type1.setAttributes(Arrays.asList(attribute, attribute2));
-
+    public void shouldReThrowValidationException() throws WaffleTypesException {
+        doThrow(new WaffleTypesException("this is a test")).when(validator).isValidOrThrow(any());
         try {
-            victim.process(Collections.singletonList(type1));
-            fail("should not have passed");
+            victim.process(new ArrayList<>());
+            fail();
+        } catch (WaffleTypesException e) {
+            assertEquals(e.getMessage(), "this is a test");
         } catch (Exception e) {
-            assertEquals(e.getMessage(),
-                    "WAFFLE Genre is not defined as a type");
-        }
-    }
-
-    @Test
-    public void shouldFailValidationDefinedMoreOnce() {
-
-        Attribute attribute = new Attribute();
-        attribute.setAttributeName("title");
-        attribute.setType("string");
-        attribute.setValidator(false);
-
-        Attribute attribute2 = new Attribute();
-        attribute2.setAttributeName("artist");
-        attribute2.setType("string");
-        attribute2.setValidator(false);
-
-        Type type1 = new Type();
-        type1.setName("Track");
-        type1.setAttributes(Arrays.asList(attribute, attribute2));
-
-        Type type2 = new Type();
-        type2.setName("Track");
-
-        try {
-            victim.process(Arrays.asList(type1, type2));
-            fail("should not have passed");
-        } catch (Exception e) {
-            assertEquals(e.getMessage(),
-                    "WAFFLE Track is defined more than once");
-        }
-    }
-
-    @Test
-    public void shouldFailValidationMoreThanOnceAttribute() {
-
-        Attribute attribute = new Attribute();
-        attribute.setAttributeName("title");
-        attribute.setType("string");
-        attribute.setValidator(false);
-
-        Attribute attribute2 = new Attribute();
-        attribute2.setAttributeName("title");
-        attribute2.setType("string");
-        attribute2.setValidator(false);
-
-        Type type1 = new Type();
-        type1.setName("Track");
-        type1.setAttributes(Arrays.asList(attribute, attribute2));
-
-        try {
-            victim.process(Arrays.asList(type1));
-            fail("should not have passed");
-        } catch (Exception e) {
-            assertEquals(e.getMessage(),
-                "WAFFLE title is defined more than once in Track");
+            fail();
         }
     }
 
