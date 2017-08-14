@@ -15,6 +15,9 @@ public class ServiceDefinition {
     private List<Type> types;
     private List<Operation> operations;
 
+    public ServiceDefinition() {
+    }
+
     public String getInterfaceName() {
         return interfaceName;
     }

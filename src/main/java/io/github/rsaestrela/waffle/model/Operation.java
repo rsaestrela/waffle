@@ -8,7 +8,10 @@ public class Operation {
     private String name;
     private String method;
     private List<RequestParameter> requestParameters;
-    private OperationResponse operationResponse;
+    private Response response;
+
+    public Operation() {
+    }
 
     public String getName() {
         return name;
@@ -34,12 +37,12 @@ public class Operation {
         this.requestParameters = requestParameters;
     }
 
-    public OperationResponse getOperationResponse() {
-        return operationResponse;
+    public Response getResponse() {
+        return response;
     }
 
-    public void setOperationResponse(OperationResponse operationResponse) {
-        this.operationResponse = operationResponse;
+    public void setResponse(Response response) {
+        this.response = response;
     }
 
     @Override
@@ -54,12 +57,12 @@ public class Operation {
         return Objects.equals(name, operation.name) &&
                 Objects.equals(method, operation.method) &&
                 Objects.equals(requestParameters, operation.requestParameters) &&
-                Objects.equals(operationResponse, operation.operationResponse);
+                Objects.equals(response, operation.response);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, method, requestParameters, operationResponse);
+        return Objects.hash(name, method, requestParameters, response);
     }
 }
 

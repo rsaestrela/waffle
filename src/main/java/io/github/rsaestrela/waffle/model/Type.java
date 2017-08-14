@@ -1,14 +1,16 @@
 package io.github.rsaestrela.waffle.model;
 
 
+import java.util.List;
 import java.util.Objects;
 
 public class Type {
 
     private String name;
-    private String type;
-    private boolean validator;
-    private boolean nativeType;
+    private List<Attribute> attributes;
+
+    public Type() {
+    }
 
     public String getName() {
         return name;
@@ -18,28 +20,12 @@ public class Type {
         this.name = name;
     }
 
-    public String getType() {
-        return type;
+    public List<Attribute> getAttributes() {
+        return attributes;
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public boolean isValidator() {
-        return validator;
-    }
-
-    public void setValidator(boolean validator) {
-        this.validator = validator;
-    }
-
-    public boolean isNativeType() {
-        return nativeType;
-    }
-
-    public void setNativeType(boolean nativeType) {
-        this.nativeType = nativeType;
+    public void setAttributes(List<Attribute> attributes) {
+        this.attributes = attributes;
     }
 
     @Override
@@ -47,18 +33,16 @@ public class Type {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof Type)) {
             return false;
         }
-        Type type1 = (Type) o;
-        return validator == type1.validator &&
-                nativeType == type1.nativeType &&
-                Objects.equals(name, type1.name) &&
-                Objects.equals(type, type1.type);
+        Type type = (Type) o;
+        return Objects.equals(name, type.name) &&
+                Objects.equals(attributes, type.attributes);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, type, validator, nativeType);
+        return Objects.hash(name, attributes);
     }
 }

@@ -2,10 +2,13 @@ package io.github.rsaestrela.waffle.model;
 
 import java.util.Objects;
 
-public class OperationResponse {
+public class Response {
 
     private String name;
     private String type;
+
+    public Response() {
+    }
 
     public String getName() {
         return name;
@@ -31,7 +34,7 @@ public class OperationResponse {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        OperationResponse that = (OperationResponse) o;
+        Response that = (Response) o;
         return Objects.equals(name, that.name) &&
                 Objects.equals(type, that.type);
     }

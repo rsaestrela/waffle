@@ -8,6 +8,13 @@ public class ServiceDefinitions {
 
     private List<ServiceDefinition> serviceDefinitions;
 
+    public ServiceDefinitions() {
+    }
+
+    public ServiceDefinitions(List<ServiceDefinition> serviceDefinitions) {
+        this.serviceDefinitions = serviceDefinitions;
+    }
+
     public List<ServiceDefinition> getServiceDefinitions() {
         return serviceDefinitions;
     }

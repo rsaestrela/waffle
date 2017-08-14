@@ -6,8 +6,11 @@ import java.util.Objects;
 public class RequestParameter {
 
     private String name;
-    private Type type;
+    private String type;
     private boolean mandatory;
+
+    public RequestParameter() {
+    }
 
     public String getName() {
         return name;
@@ -17,11 +20,11 @@ public class RequestParameter {
         this.name = name;
     }
 
-    public Type getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(Type type) {
+    public void setType(String type) {
         this.type = type;
     }
 
