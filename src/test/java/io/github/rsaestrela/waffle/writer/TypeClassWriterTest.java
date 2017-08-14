@@ -34,7 +34,7 @@ public class TypeClassWriterTest {
         Map<String, String> typeMembers = new HashMap<>();
         typeMembers.put("name", NativeType.STRING.getNativePackage());
         typeMembers.put("age", NativeType.INTEGER.getNativePackage());
-        typeMembers.put("gender", NAMESPACE + "." + "Gender");
+        typeMembers.put("gender", NAMESPACE + ".type." + "Gender");
         typeOutputClass.setTypeMembers(typeMembers);
         try {
             victim.writeTypeClass(typeOutputClass);
