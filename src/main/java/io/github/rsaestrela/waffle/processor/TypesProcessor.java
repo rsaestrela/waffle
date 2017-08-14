@@ -19,7 +19,7 @@ public final class TypesProcessor extends Processor<Type, TypeOutputClass> {
     }
 
     @Override
-    protected Set<TypeOutputClass> process(List<Type> types) throws WaffleTypesException {
+    public Set<TypeOutputClass> process(List<Type> types) throws WaffleTypesException {
         validator.isValidOrThrow(types);
         Set<TypeOutputClass> typeOutputClasses = new HashSet<>();
         types.forEach(t -> {

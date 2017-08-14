@@ -22,7 +22,7 @@ public abstract class Processor<T, O extends OutputClass> {
         return namespace;
     }
 
-    protected abstract Set<O> process(List<T> types) throws WaffleTypesException;
+    public abstract Set<O> process(List<T> types) throws WaffleTypesException;
 
     @Override
     public boolean equals(Object o) {

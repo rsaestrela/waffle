@@ -2,20 +2,12 @@ package io.github.rsaestrela.waffle.processor;
 
 
 import java.util.Map;
+import java.util.Objects;
 
 public class TypeOutputClass extends OutputClass {
 
-    private String namespace;
     private String typeName;
     private Map<String, String> typeMembers;
-
-    public String getNamespace() {
-        return namespace;
-    }
-
-    public void setNamespace(String namespace) {
-        this.namespace = namespace;
-    }
 
     public String getTypeName() {
         return typeName;
@@ -31,5 +23,23 @@ public class TypeOutputClass extends OutputClass {
 
     public void setTypeMembers(Map<String, String> typeMembers) {
         this.typeMembers = typeMembers;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof TypeOutputClass)) {
+            return false;
+        }
+        TypeOutputClass that = (TypeOutputClass) o;
+        return Objects.equals(typeName, that.typeName) &&
+                Objects.equals(typeMembers, that.typeMembers);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(typeName, typeMembers);
     }
 }

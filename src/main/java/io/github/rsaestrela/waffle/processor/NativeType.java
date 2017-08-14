@@ -10,14 +10,14 @@ public enum NativeType {
     //TODO add all major types
     STRING("string", "java.lang.String"),
     LONG("long", "java.lang.Long"),
-    INTERGER("integer", "java.lang.Integer");
+    INTEGER("integer", "java.lang.Integer");
 
     private String descriptor;
-    private String name;
+    private String nativePackage;
 
-    NativeType(String descriptor, String name) {
+    NativeType(String descriptor, String nativePackage) {
         this.descriptor = descriptor;
-        this.name = name;
+        this.nativePackage = nativePackage;
     }
 
     public String getDescriptor() {
@@ -28,15 +28,16 @@ public enum NativeType {
         this.descriptor = descriptor;
     }
 
-    public String getName() {
-        return name;
+    public String getNativePackage() {
+        return nativePackage;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNativePackage(String nativePackage) {
+        this.nativePackage = nativePackage;
     }
 
     public static Map<String, String> natives() {
-        return Stream.of(NativeType.values()).collect(Collectors.toMap(NativeType::getDescriptor, NativeType::getName));
+        return Stream.of(NativeType.values())
+                .collect(Collectors.toMap(NativeType::getDescriptor, NativeType::getNativePackage));
     }
 }
