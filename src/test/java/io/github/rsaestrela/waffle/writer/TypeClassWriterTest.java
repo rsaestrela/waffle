@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.mockito.MockitoAnnotations.initMocks;
+import static org.testng.Assert.fail;
 
 public class TypeClassWriterTest {
 
@@ -26,20 +27,23 @@ public class TypeClassWriterTest {
     }
 
     @Test
-    public void shouldSuccessfullyProcessTypes() {
-        //todo finish
+    public void shouldSuccessfullyWriteTypeClassWithPrimitives() {
         TypeOutputClass typeOutputClass = new TypeOutputClass();
         typeOutputClass.setTypeName("Person");
         typeOutputClass.setNamespace(NAMESPACE);
         Map<String, String> typeMembers = new HashMap<>();
         typeMembers.put("name", NativeType.STRING.getNativePackage());
         typeMembers.put("age", NativeType.INTEGER.getNativePackage());
-        typeMembers.put("gender", NAMESPACE + ".type." + "Gender");
+        typeMembers.put("owns", NativeType.LONG.getNativePackage());
+        typeMembers.put("gender", NativeType.CHAR.getNativePackage());
+        typeMembers.put("weight", NativeType.FLOAT.getNativePackage());
+        typeMembers.put("bf", NativeType.DOUBLE.getNativePackage());
+        typeMembers.put("healthy", NativeType.BOOLEAN.getNativePackage());
         typeOutputClass.setTypeMembers(typeMembers);
         try {
             victim.writeTypeClass(typeOutputClass);
         } catch (WaffleClassWriterException e) {
-            e.printStackTrace();
+            fail(e.getMessage());
         }
     }
 }

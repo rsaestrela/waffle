@@ -7,10 +7,15 @@ import java.util.stream.Stream;
 
 public enum NativeType {
 
-    //TODO add all major types
-    STRING("string", "java.lang.String"),
+    BYTE("byte", "java.lang.Byte"),
+    CHAR("char", "java.lang.Character"),
+    SHORT("short", "java.lang.Short"),
+    INTEGER("integer", "java.lang.Integer"),
     LONG("long", "java.lang.Long"),
-    INTEGER("integer", "java.lang.Integer");
+    FLOAT("float", "java.lang.Float"),
+    DOUBLE("double", "java.lang.Double"),
+    STRING("string", "java.lang.String"),
+    BOOLEAN("boolean", "java.lang.Boolean");
 
     private String descriptor;
     private String nativePackage;
