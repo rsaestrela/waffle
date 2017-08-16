@@ -1,40 +1,39 @@
 package io.github.rsaestrela.waffle;
 
-import io.github.rsaestrela.waffle.exception.WaffleClassWriterException;
 import io.github.rsaestrela.waffle.exception.WaffleException;
-import io.github.rsaestrela.waffle.exception.WaffleTypesException;
 import io.github.rsaestrela.waffle.loader.ServiceDefinitionsLoader;
+import io.github.rsaestrela.waffle.model.ServiceDefinition;
 import io.github.rsaestrela.waffle.model.ServiceDefinitions;
 import io.github.rsaestrela.waffle.processor.TypeOutputClass;
 import io.github.rsaestrela.waffle.processor.TypesProcessor;
 import io.github.rsaestrela.waffle.processor.validation.TypesValidator;
+import io.github.rsaestrela.waffle.writer.Resource;
 import io.github.rsaestrela.waffle.writer.TypeClassWriter;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class Waffle {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws WaffleException {
         String namespace = "namespace";
         TypesProcessor typesProcessor = new TypesProcessor(namespace, new TypesValidator());
         TypeClassWriter typeClassWriter = new TypeClassWriter();
         try {
             ServiceDefinitions serviceDefinitions = new ServiceDefinitionsLoader().load(new HashSet<>(Arrays.asList(args)));
-            serviceDefinitions.getServiceDefinitions().forEach(sd -> {
-                try {
-                    Set<TypeOutputClass> typeOutputClasses = typesProcessor.process(sd.getTypes());
-                    for (TypeOutputClass typeOutputClass: typeOutputClasses) {
-                        typeClassWriter.writeTypeClass(typeOutputClass);
-                    }
-                } catch (WaffleTypesException | WaffleClassWriterException e) {
-                    e.printStackTrace();
+            for (ServiceDefinition serviceDefinition: serviceDefinitions.getServiceDefinitions()) {
+                Set<TypeOutputClass> typeOutputClasses = typesProcessor.process(serviceDefinition.getTypes());
+                for (TypeOutputClass typeOutputClass: typeOutputClasses) {
+                    typeClassWriter.writeTypeClass(typeOutputClass);
                 }
-            });
-        } catch (WaffleException we) {
-            typeClassWriter.rollback();
+            }
+        } catch (Exception e) {
+            rollback(new ArrayList<>());
+            throw e;
         }
+    }
+
+    public static boolean rollback(List<Resource> resources) {
+        return resources.stream().allMatch(r -> r.getFile().delete());
     }
 
 }

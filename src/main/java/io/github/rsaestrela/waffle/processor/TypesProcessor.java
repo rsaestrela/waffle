@@ -36,7 +36,6 @@ public final class TypesProcessor extends Processor<Type, TypeOutputClass> {
                         a.getAttributeName(),
                         String.format("%s%s%s%s", getNamespace(), TYPE_PACKAGE, DOT, type)
                     );
-
                 }
             });
             typeOutputClass.setTypeMembers(typeMembers);

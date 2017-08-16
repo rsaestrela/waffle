@@ -104,10 +104,8 @@ public class ServiceDefinitionsLoaderTest {
         requestParameter3.setType(randomString());
 
         Response response1 = new Response();
-        response1.setName(randomString());
         response1.setType(randomString());
         Response response2 = new Response();
-        response2.setName(randomString());
         response2.setType(randomString());
 
         Operation operation1 = new Operation();

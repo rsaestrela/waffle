@@ -45,6 +45,13 @@ public class Operation {
         this.response = response;
     }
 
+    public String signatureHash() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(response.getType()).append(name);
+        requestParameters.forEach(p -> stringBuilder.append(p.getType()).append(p.getName()));
+        return stringBuilder.toString();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

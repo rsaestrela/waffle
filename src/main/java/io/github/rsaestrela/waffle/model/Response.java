@@ -4,18 +4,9 @@ import java.util.Objects;
 
 public class Response {
 
-    private String name;
     private String type;
 
     public Response() {
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getType() {
@@ -35,12 +26,11 @@ public class Response {
             return false;
         }
         Response that = (Response) o;
-        return Objects.equals(name, that.name) &&
-                Objects.equals(type, that.type);
+        return Objects.equals(type, that.type);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, type);
+        return Objects.hash(type);
     }
 }

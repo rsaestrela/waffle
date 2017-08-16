@@ -1,7 +1,7 @@
 package io.github.rsaestrela.waffle.writer;
 
 
-import io.github.rsaestrela.waffle.exception.WaffleClassWriterException;
+import io.github.rsaestrela.waffle.Waffle;
 import io.github.rsaestrela.waffle.processor.NativeType;
 import io.github.rsaestrela.waffle.processor.TypeOutputClass;
 import org.testng.annotations.BeforeMethod;
@@ -9,10 +9,11 @@ import org.testng.annotations.Test;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.mockito.MockitoAnnotations.initMocks;
-import static org.testng.Assert.fail;
+import static org.testng.Assert.*;
 
 public class TypeClassWriterTest {
 
@@ -40,10 +41,15 @@ public class TypeClassWriterTest {
         typeMembers.put("bf", NativeType.DOUBLE.getNativePackage());
         typeMembers.put("healthy", NativeType.BOOLEAN.getNativePackage());
         typeOutputClass.setTypeMembers(typeMembers);
+        List<Resource> resources = null;
         try {
-            victim.writeTypeClass(typeOutputClass);
-        } catch (WaffleClassWriterException e) {
+            resources = victim.writeTypeClass(typeOutputClass);
+            ClassLoader classLoader = ClassLoader.getSystemClassLoader();
+            assertNotNull(Class.forName(NAMESPACE + ".type." + "Person", true, classLoader));
+        } catch (Exception e) {
             fail(e.getMessage());
+        } finally {
+            assertTrue(Waffle.rollback(resources));
         }
     }
 }

@@ -10,6 +10,8 @@ public class ${clazz.typeName} {
 
     private ${members[attribute]} ${attribute};
 </#list>
+
+    public ${clazz.typeName}() {}
 <#list members?keys as attribute>
 
 <#if members[attribute] == "java.lang.Boolean">
