@@ -1,8 +1,8 @@
 package io.github.rsaestrela.waffle.processor.validation;
 
 
+import io.github.rsaestrela.waffle.exception.WaffleOperationsException;
 import io.github.rsaestrela.waffle.exception.WaffleRuntimeException;
-import io.github.rsaestrela.waffle.exception.WaffleTypesException;
 import io.github.rsaestrela.waffle.model.Operation;
 import io.github.rsaestrela.waffle.model.RequestParameter;
 import io.github.rsaestrela.waffle.model.Type;
@@ -11,18 +11,18 @@ import io.github.rsaestrela.waffle.processor.NativeType;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class OperationsValidator implements CheckedValidator2<List<Type>, List<Operation>, WaffleTypesException> {
+public class OperationsValidator implements CheckedValidator2<List<Type>, List<Operation>, WaffleOperationsException> {
 
     private static final Map<String, String> NATIVES = NativeType.natives();
 
     @Override
-    public void isValidOrThrow(List<Type> types, List<Operation> operations) throws WaffleTypesException {
+    public void isValidOrThrow(List<Type> types, List<Operation> operations) throws WaffleOperationsException {
         try {
             noDuplicatedOperations(operations);
             noAbsentTypes(types, operations);
             noDuplicatedParameters(operations);
         } catch (WaffleRuntimeException wre) {
-            throw new WaffleTypesException(wre.getMessage());
+            throw new WaffleOperationsException(wre.getMessage());
         }
     }
 
@@ -39,7 +39,13 @@ public class OperationsValidator implements CheckedValidator2<List<Type>, List<O
         List<String> definedTypes = types.stream().map(Type::getName).collect(Collectors.toList());
         List<String> requestTypes = operations.stream().map(Operation::getRequestParameters)
                 .flatMap(Collection::stream).map(RequestParameter::getType).collect(Collectors.toList());
+        List<String> responseTypes = operations.stream().map(o -> o.getResponse().getType()).collect(Collectors.toList());
         requestTypes.forEach(rt -> {
+            if (!definedTypes.contains(rt) && !NATIVES.containsKey(rt)) {
+                throw new WaffleRuntimeException(String.format("WAFFLE %s is not defined as a type", rt));
+            }
+        });
+        responseTypes.forEach(rt -> {
             if (!definedTypes.contains(rt) && !NATIVES.containsKey(rt)) {
                 throw new WaffleRuntimeException(String.format("WAFFLE %s is not defined as a type", rt));
             }
@@ -51,7 +57,9 @@ public class OperationsValidator implements CheckedValidator2<List<Type>, List<O
             Set<String> noDuplicates = new HashSet<>();
             o.getRequestParameters().forEach(rp -> {
                 if (!noDuplicates.add(rp.getName())) {
-                    throw new WaffleRuntimeException(String.format("WAFFLE %s is defined more than once", rp.getName()));
+                    throw new WaffleRuntimeException(
+                        String.format("WAFFLE %s is defined more than once on %s", rp.getName(), o.getName())
+                    );
                 }
             });
         });
