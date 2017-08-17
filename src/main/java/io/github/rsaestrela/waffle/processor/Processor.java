@@ -1,16 +1,15 @@
 package io.github.rsaestrela.waffle.processor;
 
 
-import io.github.rsaestrela.waffle.exception.WaffleTypesException;
+import io.github.rsaestrela.waffle.model.ServiceDefinition;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
-public abstract class Processor<T, O extends OutputClass> {
+public abstract class Processor<O extends OutputClass, E extends Throwable> {
 
-    protected static final String DOT = ".";
     protected static final String TYPE_PACKAGE = ".waffle.type";
+    protected static final String DOT = ".";
 
     private final String namespace;
 
@@ -22,7 +21,7 @@ public abstract class Processor<T, O extends OutputClass> {
         return namespace;
     }
 
-    public abstract Set<O> process(List<T> types) throws WaffleTypesException;
+    public abstract List<O> process(ServiceDefinition serviceDefinition) throws E;
 
     @Override
     public boolean equals(Object o) {
@@ -40,5 +39,4 @@ public abstract class Processor<T, O extends OutputClass> {
     public int hashCode() {
         return Objects.hash(namespace);
     }
-
 }

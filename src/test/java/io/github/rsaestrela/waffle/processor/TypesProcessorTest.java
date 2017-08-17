@@ -3,6 +3,7 @@ package io.github.rsaestrela.waffle.processor;
 
 import io.github.rsaestrela.waffle.exception.WaffleTypesException;
 import io.github.rsaestrela.waffle.model.Attribute;
+import io.github.rsaestrela.waffle.model.ServiceDefinition;
 import io.github.rsaestrela.waffle.model.Type;
 import io.github.rsaestrela.waffle.processor.validation.CheckedValidator;
 import org.mockito.Mock;
@@ -13,7 +14,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -76,8 +76,9 @@ public class TypesProcessorTest {
         type4.setAttributes(new ArrayList<>());
 
         try {
-            Set<TypeOutputClass> typeOutputClasses =
-                    victim.process(Arrays.asList(type1, type2, type3, type4));
+            ServiceDefinition serviceDefinition = new ServiceDefinition();
+            serviceDefinition.setTypes(Arrays.asList(type1, type2, type3, type4));
+            List<TypeOutputClass> typeOutputClasses = victim.process(serviceDefinition);
             assertEquals(typeOutputClasses.size(), 4);
             assertTrue(typeOutputClasses.stream()
                     .map(TypeOutputClass::getNamespace)
@@ -98,7 +99,9 @@ public class TypesProcessorTest {
     public void shouldReThrowValidationException() throws WaffleTypesException {
         doThrow(new WaffleTypesException("this is a test")).when(validator).isValidOrThrow(any());
         try {
-            victim.process(new ArrayList<>());
+            ServiceDefinition serviceDefinition = new ServiceDefinition();
+            serviceDefinition.setTypes(new ArrayList<>());
+            victim.process(serviceDefinition);
             fail();
         } catch (WaffleTypesException e) {
             assertEquals(e.getMessage(), "this is a test");

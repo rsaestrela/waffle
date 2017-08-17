@@ -2,12 +2,16 @@ package io.github.rsaestrela.waffle.processor;
 
 
 import io.github.rsaestrela.waffle.exception.WaffleTypesException;
+import io.github.rsaestrela.waffle.model.ServiceDefinition;
 import io.github.rsaestrela.waffle.model.Type;
 import io.github.rsaestrela.waffle.processor.validation.CheckedValidator;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-public final class TypesProcessor extends Processor<Type, TypeOutputClass> {
+public final class TypesProcessor extends Processor<TypeOutputClass, WaffleTypesException> {
 
     private static final Map<String, String> NATIVES = NativeType.natives();
 
@@ -19,9 +23,10 @@ public final class TypesProcessor extends Processor<Type, TypeOutputClass> {
     }
 
     @Override
-    public Set<TypeOutputClass> process(List<Type> types) throws WaffleTypesException {
+    public List<TypeOutputClass> process(ServiceDefinition serviceDefinition) throws WaffleTypesException {
+        List<Type> types = serviceDefinition.getTypes();
         validator.isValidOrThrow(types);
-        Set<TypeOutputClass> typeOutputClasses = new HashSet<>();
+        List<TypeOutputClass> typeOutputClasses = new ArrayList<>();
         types.forEach(t -> {
             TypeOutputClass typeOutputClass = new TypeOutputClass();
             typeOutputClass.setNamespace(getNamespace() + TYPE_PACKAGE);
@@ -29,13 +34,11 @@ public final class TypesProcessor extends Processor<Type, TypeOutputClass> {
             Map<String, String> typeMembers = new HashMap<>();
             t.getAttributes().forEach(a -> {
                 String type = a.getType();
-                if (NATIVES.containsKey(a.getType())) {
-                    typeMembers.put(a.getAttributeName(), NATIVES.get(type));
+                String attributeName = a.getAttributeName();
+                if (NATIVES.containsKey(type)) {
+                    typeMembers.put(attributeName, NATIVES.get(type));
                 } else {
-                    typeMembers.put(
-                        a.getAttributeName(),
-                        String.format("%s%s%s%s", getNamespace(), TYPE_PACKAGE, DOT, type)
-                    );
+                    typeMembers.put(attributeName, String.format("%s%s%s%s", getNamespace(), TYPE_PACKAGE, DOT, type));
                 }
             });
             typeOutputClass.setTypeMembers(typeMembers);

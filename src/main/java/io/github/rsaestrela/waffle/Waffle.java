@@ -10,7 +10,10 @@ import io.github.rsaestrela.waffle.processor.validation.TypesValidator;
 import io.github.rsaestrela.waffle.writer.Resource;
 import io.github.rsaestrela.waffle.writer.TypeClassWriter;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
 
 public class Waffle {
 
@@ -21,7 +24,7 @@ public class Waffle {
         try {
             ServiceDefinitions serviceDefinitions = new ServiceDefinitionsLoader().load(new HashSet<>(Arrays.asList(args)));
             for (ServiceDefinition serviceDefinition: serviceDefinitions.getServiceDefinitions()) {
-                Set<TypeOutputClass> typeOutputClasses = typesProcessor.process(serviceDefinition.getTypes());
+                List<TypeOutputClass> typeOutputClasses = typesProcessor.process(serviceDefinition);
                 for (TypeOutputClass typeOutputClass: typeOutputClasses) {
                     typeClassWriter.writeTypeClass(typeOutputClass);
                 }
