@@ -5,19 +5,22 @@ import io.github.rsaestrela.waffle.exception.WaffleOperationsException;
 import io.github.rsaestrela.waffle.exception.WaffleRuntimeException;
 import io.github.rsaestrela.waffle.model.Operation;
 import io.github.rsaestrela.waffle.model.RequestParameter;
+import io.github.rsaestrela.waffle.model.ServiceDefinition;
 import io.github.rsaestrela.waffle.model.Type;
 import io.github.rsaestrela.waffle.processor.NativeType;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class OperationsValidator implements CheckedValidator2<List<Type>, List<Operation>, WaffleOperationsException> {
+public class OperationsValidator implements CheckedValidator<ServiceDefinition, WaffleOperationsException> {
 
     private static final Map<String, String> NATIVES = NativeType.natives();
 
     @Override
-    public void isValidOrThrow(List<Type> types, List<Operation> operations) throws WaffleOperationsException {
+    public void isValidOrThrow(ServiceDefinition serviceDefinition) throws WaffleOperationsException {
         try {
+            List<Operation> operations = serviceDefinition.getOperations();
+            List<Type> types = serviceDefinition.getTypes();
             noDuplicatedOperations(operations);
             noAbsentTypes(types, operations);
             noDuplicatedParameters(operations);

@@ -3,7 +3,7 @@ package io.github.rsaestrela.waffle.processor;
 
 import io.github.rsaestrela.waffle.exception.WaffleOperationsException;
 import io.github.rsaestrela.waffle.model.*;
-import io.github.rsaestrela.waffle.processor.validation.CheckedValidator2;
+import io.github.rsaestrela.waffle.processor.validation.CheckedValidator;
 import org.mockito.Mock;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -14,8 +14,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.testng.Assert.*;
 
@@ -24,7 +22,7 @@ public class OperationsProcessorTest {
     private static final String NAMESPACE = "io.rsaestrela.github";
 
     @Mock
-    private CheckedValidator2<List<Type>, List<Operation>, WaffleOperationsException> validator;
+    private CheckedValidator<ServiceDefinition, WaffleOperationsException> validator;
 
     private OperationsProcessor victim;
 
@@ -80,7 +78,7 @@ public class OperationsProcessorTest {
 
         try {
             //todo improve asserts
-            victim = new OperationsProcessor(serviceDefinition, validator);
+            victim = new OperationsProcessor(serviceDefinition);
             List<OperationOutputInterface> operationOutputInterfaces = victim.process();
             assertEquals(operationOutputInterfaces.size(), 1);
             OperationOutputInterface operationOutputInterface = operationOutputInterfaces.get(0);
@@ -92,22 +90,6 @@ public class OperationsProcessorTest {
                     .allMatch(ns -> ns.equals(NAMESPACE + ".waffle.operation")));
         } catch (Exception e) {
             fail(e.getMessage());
-        }
-    }
-
-    @Test
-    public void shouldReThrowValidationException() throws WaffleOperationsException {
-        doThrow(new WaffleOperationsException("this is a test")).when(validator).isValidOrThrow(any(), any());
-        try {
-            ServiceDefinition serviceDefinition = new ServiceDefinition();
-            serviceDefinition.setTypes(new ArrayList<>());
-            victim = new OperationsProcessor(serviceDefinition, validator);
-            victim.process();
-            fail();
-        } catch (WaffleOperationsException e) {
-            assertEquals(e.getMessage(), "this is a test");
-        } catch (Exception e) {
-            fail();
         }
     }
 

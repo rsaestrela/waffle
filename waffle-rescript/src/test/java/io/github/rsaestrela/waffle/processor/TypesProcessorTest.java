@@ -16,8 +16,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.testng.Assert.*;
 
@@ -80,7 +78,7 @@ public class TypesProcessorTest {
             serviceDefinition.setNamespace(NAMESPACE);
             serviceDefinition.setTypes(Arrays.asList(type1, type2, type3, type4));
 
-            victim = new TypesProcessor(serviceDefinition, validator);
+            victim = new TypesProcessor(serviceDefinition);
 
             List<TypeOutputClass> typeOutputClasses = victim.process();
             assertEquals(typeOutputClasses.size(), 4);
@@ -96,23 +94,6 @@ public class TypesProcessorTest {
             );
         } catch (Exception e) {
             fail(e.getMessage());
-        }
-    }
-
-    @Test
-    public void shouldReThrowValidationException() throws WaffleTypesException {
-        doThrow(new WaffleTypesException("this is a test")).when(validator).isValidOrThrow(any());
-        try {
-            ServiceDefinition serviceDefinition = new ServiceDefinition();
-            serviceDefinition.setTypes(new ArrayList<>());
-            serviceDefinition.setNamespace(NAMESPACE);
-            victim = new TypesProcessor(serviceDefinition, validator);
-            victim.process();
-            fail();
-        } catch (WaffleTypesException e) {
-            assertEquals(e.getMessage(), "this is a test");
-        } catch (Exception e) {
-            fail();
         }
     }
 

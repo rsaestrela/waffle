@@ -3,6 +3,7 @@ package io.github.rsaestrela.waffle.processor.validation;
 
 import io.github.rsaestrela.waffle.exception.WaffleTypesException;
 import io.github.rsaestrela.waffle.model.Attribute;
+import io.github.rsaestrela.waffle.model.ServiceDefinition;
 import io.github.rsaestrela.waffle.model.Type;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -11,14 +12,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.fail;
 
 public class TypesValidatorTest {
 
-    private CheckedValidator<List<Type>, WaffleTypesException> victim;
+    private CheckedValidator<ServiceDefinition, WaffleTypesException> victim;
 
     @BeforeMethod
     public void init() throws IOException {
@@ -42,8 +42,11 @@ public class TypesValidatorTest {
         type1.setName("Track");
         type1.setAttributes(Arrays.asList(attribute, attribute2));
 
+        ServiceDefinition serviceDefinition = new ServiceDefinition();
+        serviceDefinition.setTypes(Collections.singletonList(type1));
+
         try {
-            victim.isValidOrThrow(Collections.singletonList(type1));
+            victim.isValidOrThrow(serviceDefinition);
             fail("should not have passed");
         } catch (Exception e) {
             assertEquals(e.getMessage(),
@@ -72,8 +75,11 @@ public class TypesValidatorTest {
         type2.setName("Track");
         type2.setAttributes(new ArrayList<>());
 
+        ServiceDefinition serviceDefinition = new ServiceDefinition();
+        serviceDefinition.setTypes(Arrays.asList(type1, type2));
+
         try {
-            victim.isValidOrThrow(Arrays.asList(type1, type2));
+            victim.isValidOrThrow(serviceDefinition);
             fail("should not have passed");
         } catch (Exception e) {
             assertEquals(e.getMessage(),
@@ -98,8 +104,11 @@ public class TypesValidatorTest {
         type1.setName("Track");
         type1.setAttributes(Arrays.asList(attribute, attribute2));
 
+        ServiceDefinition serviceDefinition = new ServiceDefinition();
+        serviceDefinition.setTypes(Collections.singletonList(type1));
+
         try {
-            victim.isValidOrThrow(Collections.singletonList(type1));
+            victim.isValidOrThrow(serviceDefinition);
             fail("should not have passed");
         } catch (Exception e) {
             assertEquals(e.getMessage(),

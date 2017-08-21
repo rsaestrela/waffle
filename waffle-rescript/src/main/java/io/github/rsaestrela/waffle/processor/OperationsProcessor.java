@@ -4,8 +4,6 @@ package io.github.rsaestrela.waffle.processor;
 import io.github.rsaestrela.waffle.exception.WaffleOperationsException;
 import io.github.rsaestrela.waffle.model.Operation;
 import io.github.rsaestrela.waffle.model.ServiceDefinition;
-import io.github.rsaestrela.waffle.model.Type;
-import io.github.rsaestrela.waffle.processor.validation.CheckedValidator2;
 
 import java.util.*;
 
@@ -14,19 +12,14 @@ public final class OperationsProcessor extends Processor<OperationOutputInterfac
     protected static final String OP_PACKAGE = ".waffle.operation";
     private static final Map<String, String> NATIVES = NativeType.natives();
 
-    private final CheckedValidator2<List<Type>, List<Operation>, WaffleOperationsException> validator;
-
-    public OperationsProcessor(ServiceDefinition serviceDefinition,
-                               CheckedValidator2<List<Type>, List<Operation>, WaffleOperationsException> validator) {
+    public OperationsProcessor(ServiceDefinition serviceDefinition) {
         super(serviceDefinition);
-        this.validator = validator;
     }
 
     @Override
     public List<OperationOutputInterface> process() throws WaffleOperationsException {
         String namespace = serviceDefinition.getNamespace();
         List<Operation> operations = serviceDefinition.getOperations();
-        validator.isValidOrThrow(serviceDefinition.getTypes(), operations);
         OperationOutputInterface operationOutputInterface = new OperationOutputInterface();
         operationOutputInterface.setInterfaceName(serviceDefinition.getInterfaceName());
         operationOutputInterface.setNamespace(namespace + OP_PACKAGE);

@@ -4,6 +4,7 @@ package io.github.rsaestrela.waffle.processor.validation;
 import io.github.rsaestrela.waffle.exception.WaffleRuntimeException;
 import io.github.rsaestrela.waffle.exception.WaffleTypesException;
 import io.github.rsaestrela.waffle.model.Attribute;
+import io.github.rsaestrela.waffle.model.ServiceDefinition;
 import io.github.rsaestrela.waffle.model.Type;
 import io.github.rsaestrela.waffle.processor.NativeType;
 
@@ -13,12 +14,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class TypesValidator implements CheckedValidator<List<Type>, WaffleTypesException> {
+public class TypesValidator implements CheckedValidator<ServiceDefinition, WaffleTypesException> {
 
     private static final Map<String, String> NATIVES = NativeType.natives();
 
     @Override
-    public void isValidOrThrow(List<Type> types) throws WaffleTypesException {
+    public void isValidOrThrow(ServiceDefinition serviceDefinition) throws WaffleTypesException {
+        List<Type> types = serviceDefinition.getTypes();
         List<String> definedTypes = types.stream().map(Type::getName).collect(Collectors.toList());
         try {
             noAbsentTypes(types, definedTypes);

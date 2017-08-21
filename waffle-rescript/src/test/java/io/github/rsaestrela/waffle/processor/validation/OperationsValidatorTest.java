@@ -2,10 +2,7 @@ package io.github.rsaestrela.waffle.processor.validation;
 
 
 import io.github.rsaestrela.waffle.exception.WaffleOperationsException;
-import io.github.rsaestrela.waffle.model.Operation;
-import io.github.rsaestrela.waffle.model.RequestParameter;
-import io.github.rsaestrela.waffle.model.Response;
-import io.github.rsaestrela.waffle.model.Type;
+import io.github.rsaestrela.waffle.model.*;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -13,14 +10,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.fail;
 
 public class OperationsValidatorTest {
 
-    private CheckedValidator2<List<Type>, List<Operation>, WaffleOperationsException> victim;
+    private CheckedValidator<ServiceDefinition, WaffleOperationsException> victim;
 
     @BeforeMethod
     public void init() throws IOException {
@@ -54,8 +50,12 @@ public class OperationsValidatorTest {
         operation2.setName("getMoney");
         operation2.setRequestParameters(Arrays.asList(requestParameter1, requestParameter2));
 
+        ServiceDefinition serviceDefinition = new ServiceDefinition();
+        serviceDefinition.setTypes(new ArrayList<>());
+        serviceDefinition.setOperations(Arrays.asList(operation1, operation2));
+
         try {
-            victim.isValidOrThrow(new ArrayList<>(), Arrays.asList(operation1, operation2));
+            victim.isValidOrThrow(serviceDefinition);
             fail();
         } catch (WaffleOperationsException e) {
             assertEquals(e.getMessage(), "WAFFLE duplicated operation getMoney");
@@ -89,8 +89,12 @@ public class OperationsValidatorTest {
         operation2.setName("getMoney");
         operation2.setRequestParameters(Collections.singletonList(requestParameter2));
 
+        ServiceDefinition serviceDefinition = new ServiceDefinition();
+        serviceDefinition.setTypes(new ArrayList<>());
+        serviceDefinition.setOperations(Arrays.asList(operation1, operation2));
+
         try {
-            victim.isValidOrThrow(new ArrayList<>(), Arrays.asList(operation1, operation2));
+            victim.isValidOrThrow(serviceDefinition);
             fail();
         } catch (WaffleOperationsException e) {
             assertEquals(e.getMessage(), "WAFFLE Cash is not defined as a type");
@@ -129,8 +133,12 @@ public class OperationsValidatorTest {
         operation2.setName("getMoney");
         operation2.setRequestParameters(Arrays.asList(requestParameter1, requestParameter2));
 
+        ServiceDefinition serviceDefinition = new ServiceDefinition();
+        serviceDefinition.setTypes(Collections.singletonList(type1));
+        serviceDefinition.setOperations(Arrays.asList(operation1, operation2));
+
         try {
-            victim.isValidOrThrow(Collections.singletonList(type1), Arrays.asList(operation1, operation2));
+            victim.isValidOrThrow(serviceDefinition);
             fail();
         } catch (WaffleOperationsException e) {
             assertEquals(e.getMessage(), "WAFFLE Dollar is not defined as a type");
@@ -168,8 +176,12 @@ public class OperationsValidatorTest {
         operation2.setName("getMoney");
         operation2.setRequestParameters(Arrays.asList(requestParameter1, requestParameter2));
 
+        ServiceDefinition serviceDefinition = new ServiceDefinition();
+        serviceDefinition.setTypes(Collections.singletonList(type1));
+        serviceDefinition.setOperations(Arrays.asList(operation1, operation2));
+
         try {
-            victim.isValidOrThrow(Collections.singletonList(type1), Arrays.asList(operation1, operation2));
+            victim.isValidOrThrow(serviceDefinition);
             fail();
         } catch (WaffleOperationsException e) {
             assertEquals(e.getMessage(), "WAFFLE accountId is defined more than once on getMoney");
@@ -209,8 +221,12 @@ public class OperationsValidatorTest {
         Type type2 = new Type();
         type2.setName("Cash");
 
+        ServiceDefinition serviceDefinition = new ServiceDefinition();
+        serviceDefinition.setTypes(Arrays.asList(type1, type2));
+        serviceDefinition.setOperations(Arrays.asList(operation1, operation2));
+
         try {
-            victim.isValidOrThrow(Arrays.asList(type1, type2), Arrays.asList(operation1, operation2));
+            victim.isValidOrThrow(serviceDefinition);
         } catch (WaffleOperationsException e) {
             fail();
         }
