@@ -22,8 +22,7 @@ operations:
     mandatory: true
     type: string
   response:
-    name: bye
-    type: int
+    type: integer
 - name: postLOL
   method: POST
   requestParameters:
@@ -31,5 +30,4 @@ operations:
     mandatory: true
     type: string
   response:
-    name: bye
     type: long

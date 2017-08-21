@@ -25,7 +25,7 @@ public final class TypesProcessor extends Processor<TypeOutputClass, WaffleTypes
         List<TypeOutputClass> typeOutputClasses = new ArrayList<>();
         types.forEach(t -> {
             TypeOutputClass typeOutputClass = new TypeOutputClass();
-            typeOutputClass.setNamespace(namespace + TYPE_PACKAGE);
+            typeOutputClass.setNamespace(namespace);
             typeOutputClass.setTypeName(t.getName());
             Map<String, String> typeMembers = new HashMap<>();
             t.getAttributes().forEach(a -> {

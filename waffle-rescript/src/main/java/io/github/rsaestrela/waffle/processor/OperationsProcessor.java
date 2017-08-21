@@ -22,12 +22,17 @@ public final class OperationsProcessor extends Processor<OperationOutputInterfac
         List<Operation> operations = serviceDefinition.getOperations();
         OperationOutputInterface operationOutputInterface = new OperationOutputInterface();
         operationOutputInterface.setInterfaceName(serviceDefinition.getInterfaceName());
-        operationOutputInterface.setNamespace(namespace + OP_PACKAGE);
+        operationOutputInterface.setNamespace(namespace);
         List<OperationOutputInterface.InterfaceSignature> interfaceSignatures = new ArrayList<>();
         operations.forEach(o -> {
             OperationOutputInterface.InterfaceSignature interfaceSignature = new OperationOutputInterface.InterfaceSignature();
             interfaceSignature.setMethod(o.getName());
-            interfaceSignature.setReturnType(serviceDefinition.getNamespace() + TYPE_PACKAGE + DOT + o.getResponse().getType());
+            String nativeType = NATIVES.get(o.getResponse().getType());
+            if (namespace != null) {
+                interfaceSignature.setReturnType(nativeType);
+            } else {
+                interfaceSignature.setReturnType(serviceDefinition.getNamespace() + TYPE_PACKAGE + DOT + o.getResponse().getType());
+            }
             Map<String, String> parameters = new HashMap<>();
             o.getRequestParameters().forEach(rp -> {
                 String type = rp.getType();

@@ -84,7 +84,7 @@ public class TypesProcessorTest {
             assertEquals(typeOutputClasses.size(), 4);
             assertTrue(typeOutputClasses.stream()
                     .map(TypeOutputClass::getNamespace)
-                    .allMatch(ns -> ns.equals(NAMESPACE + ".waffle.type")));
+                    .allMatch(ns -> ns.equals(NAMESPACE)));
             assertTrue(typeOutputClasses.stream()
                     .map(TypeOutputClass::getTypeName)
                     .collect(Collectors.toList())

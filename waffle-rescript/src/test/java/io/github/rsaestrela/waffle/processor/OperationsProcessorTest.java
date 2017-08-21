@@ -87,7 +87,7 @@ public class OperationsProcessorTest {
             assertEquals(operationOutputInterface.getInterfaceSignatures().get(1).getParameters().size(), 2);
             assertTrue(operationOutputInterfaces.stream()
                     .map(OperationOutputInterface::getNamespace)
-                    .allMatch(ns -> ns.equals(NAMESPACE + ".waffle.operation")));
+                    .allMatch(ns -> ns.equals(NAMESPACE)));
         } catch (Exception e) {
             fail(e.getMessage());
         }
