@@ -6,7 +6,7 @@ import org.testng.annotations.Test;
 
 public class WaffleRescriptSuccessTest {
 
-    @Test(enabled = false)
+    @Test(enabled = true)
     public void shouldLoadDefinitions() throws WaffleException {
         Waffle.rescript(new String[]{"example.yml"});
     }
