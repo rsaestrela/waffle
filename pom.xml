@@ -12,6 +12,7 @@
     <modules>
         <module>waffle-integration-tests</module>
         <module>waffle-rescript</module>
+        <module>waffle-maven-plugin</module>
     </modules>
 
     <properties>

@@ -1,6 +1,7 @@
 package io.github.rsaestrela.waffle.model;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -67,6 +68,9 @@ public class ServiceDefinition {
     }
 
     public List<Type> getTypes() {
+        if (types == null) {
+            types = new ArrayList<>();
+        }
         return types;
     }
 
@@ -75,6 +79,9 @@ public class ServiceDefinition {
     }
 
     public List<Operation> getOperations() {
+        if (operations == null) {
+            operations = new ArrayList<>();
+        }
         return operations;
     }
 

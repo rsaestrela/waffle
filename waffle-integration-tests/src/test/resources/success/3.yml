@@ -1,0 +1,22 @@
+interfaceName: SuccessTest3
+version: 1.0.1
+description: this is a test for waffle-integration-tests!
+namespace: io.github.rsaestrela.waffle.integration
+ownership: '@rsaestrela'
+authors:
+  - name: Raul Estrela
+    email: raul@estrela.me
+
+types:
+  - name: NativesResponse
+    attributes:
+    - attributeName: oneByte
+      type: byte
+    - attributeName: oneChar
+      type: char
+
+operations:
+- name: getNativeResponse
+  method: GET
+  response:
+    type: NativesResponse

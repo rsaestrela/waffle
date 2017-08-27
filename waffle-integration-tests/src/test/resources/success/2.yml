@@ -1,0 +1,77 @@
+interfaceName: SuccessTest2
+version: 1.0.1
+description: this is a test for waffle-integration-tests!
+namespace: io.github.rsaestrela.waffle.integration
+ownership: '@rsaestrela'
+authors:
+  - name: Raul Estrela
+    email: raul@estrela.me
+
+operations:
+- name: testByte
+  method: GET
+  requestParameters:
+  - name: thisByte
+    type: byte
+  response:
+    type: byte
+- name: testChar
+  method: GET
+  requestParameters:
+  - name: thisChar
+    type: char
+  response:
+    type: char
+- name: testShort
+  method: GET
+  requestParameters:
+  - name: thisShort
+    type: short
+  response:
+    type: short
+- name: testLong
+  method: GET
+  requestParameters:
+  - name: thisLong
+    type: long
+  response:
+    type: long
+- name: testFloat
+  method: GET
+  requestParameters:
+  - name: thisFloat
+    type: float
+  response:
+    type: float
+- name: testDouble
+  method: GET
+  requestParameters:
+  - name: thisDouble
+    type: double
+  response:
+    type: double
+- name: testInteger
+  method: GET
+  requestParameters:
+  - name: thisInteger
+    type: integer
+  response:
+    type: integer
+- name: testString
+  method: GET
+  requestParameters:
+  - name: thisString
+    type: string
+  response:
+    type: string
+- name: testMultipleNatives
+  method: GET
+  requestParameters:
+  - name: thisString
+    type: integer
+  - name: thisInteger
+    type: integer
+  - name: thisDouble
+    type: double
+  response:
+    type: string

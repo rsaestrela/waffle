@@ -1,5 +1,6 @@
 package io.github.rsaestrela.waffle.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -30,6 +31,9 @@ public class Operation {
     }
 
     public List<RequestParameter> getRequestParameters() {
+        if (requestParameters == null) {
+            requestParameters = new ArrayList<>();
+        }
         return requestParameters;
     }
 
@@ -48,7 +52,9 @@ public class Operation {
     public String signatureHash() {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(response.getType()).append(name);
-        requestParameters.forEach(p -> stringBuilder.append(p.getType()).append(p.getName()));
+        if (requestParameters != null) {
+            requestParameters.forEach(p -> stringBuilder.append(p.getType()).append(p.getName()));
+        }
         return stringBuilder.toString();
     }
 

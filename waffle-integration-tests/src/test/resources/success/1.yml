@@ -1,0 +1,31 @@
+interfaceName: SuccessTest1
+version: 1.0.1
+description: this is a test for waffle-integration-tests!
+namespace: io.github.rsaestrela.waffle.integration
+ownership: '@rsaestrela'
+authors:
+  - name: Raul Estrela
+    email: raul@estrela.me
+
+types:
+  - name: MultipleNatives
+    attributes:
+    - attributeName: oneByte
+      type: byte
+    - attributeName: oneChar
+      type: char
+    - attributeName: oneShort
+      type: short
+      validator: true
+    - attributeName: oneInteger
+      type: integer
+    - attributeName: oneLong
+      type: long
+    - attributeName: oneFloat
+      type: float
+    - attributeName: oneDouble
+      type: double
+    - attributeName: oneString
+      type: string
+    - attributeName: oneBoolean
+      type: boolean

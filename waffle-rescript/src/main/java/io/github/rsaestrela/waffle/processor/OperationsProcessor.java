@@ -28,7 +28,7 @@ public final class OperationsProcessor extends Processor<OperationOutputInterfac
             OperationOutputInterface.InterfaceSignature interfaceSignature = new OperationOutputInterface.InterfaceSignature();
             interfaceSignature.setMethod(o.getName());
             String nativeType = NATIVES.get(o.getResponse().getType());
-            if (namespace != null) {
+            if (nativeType != null) {
                 interfaceSignature.setReturnType(nativeType);
             } else {
                 interfaceSignature.setReturnType(serviceDefinition.getNamespace() + TYPE_PACKAGE + DOT + o.getResponse().getType());

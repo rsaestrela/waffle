@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Waffle {
 
@@ -46,7 +47,9 @@ public class Waffle {
                 for (OperationOutputInterface operationOutputInterface: operationOutputInterfaces) {
                     resources.add(OPERATION_INTERFACE_CLASS_WRITER.writeOperationInterfaceClass(operationOutputInterface));
                 }
-                resources = COMPILER.compile(resources);
+
+                List<String> files = resources.stream().map(r -> r.getFile().getPath()).collect(Collectors.toList());
+                COMPILER.compile(files.toArray(new String[files.size()]));
             }
         } catch (Exception e) {
             rollback(resources);
