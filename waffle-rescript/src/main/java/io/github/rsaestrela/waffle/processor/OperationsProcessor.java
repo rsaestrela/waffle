@@ -9,7 +9,7 @@ import java.util.*;
 
 public final class OperationsProcessor extends Processor<OperationOutputInterface, WaffleOperationsException> {
 
-    protected static final String OP_PACKAGE = ".waffle.operation";
+    protected static final String OP_PACKAGE = ".operation";
     private static final Map<String, String> NATIVES = NativeType.natives();
 
     public OperationsProcessor(ServiceDefinition serviceDefinition) {
@@ -31,7 +31,7 @@ public final class OperationsProcessor extends Processor<OperationOutputInterfac
             if (nativeType != null) {
                 interfaceSignature.setReturnType(nativeType);
             } else {
-                interfaceSignature.setReturnType(serviceDefinition.getNamespace() + TYPE_PACKAGE + DOT + o.getResponse().getType());
+                interfaceSignature.setReturnType("waffle." + serviceDefinition.getNamespace() + TYPE_PACKAGE + DOT + o.getResponse().getType());
             }
             Map<String, String> parameters = new HashMap<>();
             o.getRequestParameters().forEach(rp -> {
@@ -39,7 +39,7 @@ public final class OperationsProcessor extends Processor<OperationOutputInterfac
                 if (NATIVES.containsKey(type)) {
                     parameters.put(rp.getName(), NATIVES.get(type));
                 } else {
-                    parameters.put(rp.getName(), String.format("%s%s%s%s", namespace, OP_PACKAGE, DOT, type)
+                    parameters.put(rp.getName(), String.format("%s%s%s%s%s", "waffle", namespace, OP_PACKAGE, DOT, type)
                     );
                 }
             });

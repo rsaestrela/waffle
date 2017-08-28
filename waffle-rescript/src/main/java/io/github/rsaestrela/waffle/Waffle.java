@@ -1,6 +1,6 @@
 package io.github.rsaestrela.waffle;
 
-import io.github.rsaestrela.waffle.compiler.ClassCompiler;
+
 import io.github.rsaestrela.waffle.exception.WaffleException;
 import io.github.rsaestrela.waffle.loader.ServiceDefinitionsLoader;
 import io.github.rsaestrela.waffle.model.ServiceDefinition;
@@ -16,17 +16,14 @@ import io.github.rsaestrela.waffle.writer.OperationInterfaceClassWriter;
 import io.github.rsaestrela.waffle.writer.Resource;
 import io.github.rsaestrela.waffle.writer.TypeClassWriter;
 
-import javax.tools.ToolProvider;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Waffle {
 
     private static final List<CheckedValidator> VALIDATORS = Arrays.asList(new TypesValidator(), new OperationsValidator());
-    private static final ClassCompiler COMPILER = new ClassCompiler(ToolProvider.getSystemJavaCompiler());
     private static final TypeClassWriter TYPE_CLASS_WRITER = new TypeClassWriter();
     private static final OperationInterfaceClassWriter OPERATION_INTERFACE_CLASS_WRITER = new OperationInterfaceClassWriter();
 
@@ -47,9 +44,6 @@ public class Waffle {
                 for (OperationOutputInterface operationOutputInterface: operationOutputInterfaces) {
                     resources.add(OPERATION_INTERFACE_CLASS_WRITER.writeOperationInterfaceClass(operationOutputInterface));
                 }
-
-                List<String> files = resources.stream().map(r -> r.getFile().getPath()).collect(Collectors.toList());
-                COMPILER.compile(files.toArray(new String[files.size()]));
             }
         } catch (Exception e) {
             rollback(resources);
