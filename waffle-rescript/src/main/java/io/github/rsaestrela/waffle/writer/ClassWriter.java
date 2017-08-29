@@ -16,7 +16,7 @@ import java.util.Map;
 public abstract class ClassWriter<T extends OutputClass> {
 
     private static final String TEMPLATE_FOLDER = "templates/";
-    private static final String TARGET_CLASSES = "target/classes";
+    private static final String TARGET_CLASSES = "target/generated-sources/java/waffle";
     private static final String ENCODING = "UTF-8";
     private final String classPackage;
     private final Configuration freemarkerConfig;

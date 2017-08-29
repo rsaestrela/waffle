@@ -8,7 +8,7 @@ import java.util.Objects;
 
 public abstract class Processor<O extends OutputClass, E extends Throwable> {
 
-    protected static final String TYPE_PACKAGE = ".waffle.type";
+    protected static final String TYPE_PACKAGE = ".type";
     protected static final String DOT = ".";
     protected final ServiceDefinition serviceDefinition;
 

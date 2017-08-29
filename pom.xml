@@ -10,7 +10,7 @@
     <version>1.0-SNAPSHOT</version>
 
     <modules>
-        <module>waffle-integration-tests</module>
+        <module>waffle-integration-tests-gen</module>
         <module>waffle-rescript</module>
         <module>waffle-maven-plugin</module>
     </modules>

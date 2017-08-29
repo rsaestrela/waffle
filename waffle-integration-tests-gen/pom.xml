@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>waffle-integration-tests</artifactId>
+    <artifactId>waffle-integration-tests-gen</artifactId>
 
     <dependencies>
         <dependency>

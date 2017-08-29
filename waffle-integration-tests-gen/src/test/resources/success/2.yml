@@ -1,7 +1,7 @@
 interfaceName: SuccessTest2
 version: 1.0.1
 description: this is a test for waffle-integration-tests!
-namespace: io.github.rsaestrela.waffle.integration
+namespace: io.github.rsaestrela.integration
 ownership: '@rsaestrela'
 authors:
   - name: Raul Estrela
