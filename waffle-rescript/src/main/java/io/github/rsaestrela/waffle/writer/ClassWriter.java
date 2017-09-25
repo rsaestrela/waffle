@@ -3,7 +3,6 @@ package io.github.rsaestrela.waffle.writer;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateException;
 import io.github.rsaestrela.waffle.exception.WaffleClassWriterException;
-import io.github.rsaestrela.waffle.exception.WaffleRuntimeException;
 import io.github.rsaestrela.waffle.processor.OutputClass;
 
 import java.io.File;
@@ -15,7 +14,7 @@ import java.util.Map;
 
 public abstract class ClassWriter<T extends OutputClass> {
 
-    private static final String TEMPLATE_FOLDER = "templates/";
+    private static final String TEMPLATE_FOLDER = "/templates";
     private static final String TARGET_CLASSES = "target/generated-sources/java/waffle";
     private static final String ENCODING = "UTF-8";
     private final String classPackage;
@@ -29,12 +28,7 @@ public abstract class ClassWriter<T extends OutputClass> {
 
     private void configureFreemarker() {
         freemarkerConfig.setDefaultEncoding(ENCODING);
-        try {
-            freemarkerConfig.setDirectoryForTemplateLoading(
-                    new File(Thread.currentThread().getContextClassLoader().getResource(TEMPLATE_FOLDER).getFile()));
-        } catch (IOException e) {
-            throw new WaffleRuntimeException("WAFFLE-DEV wrong freemarker configuration");
-        }
+        freemarkerConfig.setClassForTemplateLoading(this.getClass(), TEMPLATE_FOLDER);
     }
 
     protected Resource write(String className, String classTemplate, T clazz) throws WaffleClassWriterException {

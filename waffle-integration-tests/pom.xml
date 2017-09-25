@@ -25,6 +25,11 @@
                 <groupId>io.github.rsaestrela</groupId>
                 <artifactId>waffle-maven-plugin</artifactId>
                 <version>1.0-SNAPSHOT</version>
+                <configuration>
+                    <definitions>
+                        <param>1.yml</param>
+                    </definitions>
+                </configuration>
                 <executions>
                     <execution>
                         <phase>compile</phase>
